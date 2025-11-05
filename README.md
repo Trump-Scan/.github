@@ -1,4 +1,4 @@
-# 트럽프 스캔 (Trump Scan)
+# 트럼프 스캔 (Trump Scan)
 
 ## 프로젝트 소개
 
