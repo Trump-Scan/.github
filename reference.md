@@ -1,0 +1,4 @@
+- 트럼프 전용 sns : https://trumpstruth.org/
+- 외국으로 gpu 를 보내지 않겠다는 기사(CBS) : https://www.cbsnews.com/news/read-full-transcript-norah-odonnell-60-minutes-interview-with-president-trump/
+- LLM API 가격 및 성능 비교(+기술조사 보고서): https://claude.ai/chat/3d72af47-5363-4af4-9acf-0620df86b7ac
+- gemini 2.0 flash 를 이용한 기사 요약 비용 계산 : https://gemini.google.com/app/40b927fbb4cf513c
