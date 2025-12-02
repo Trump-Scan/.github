@@ -15,7 +15,7 @@
 **작업 내용:**
 1. Semantic Summary 생성 (영어, 100-200 단어)
 2. Display Summary 생성 (한국어, 3-5문장)
-3. 관련 산업 식별 (태그 리스트)
+3. 관련 키워드 식별 (태그 리스트)
 
 **처리량:**
 - 일일 수집: 120개 (Truth Social 20 + 백악관 10 + 뉴스 90)
@@ -69,7 +69,7 @@
 **생성 내용:**
 - Semantic Summary: 200 tokens
 - Display Summary: 150 tokens
-- Industries: 50 tokens
+- Keywords: 50 tokens
 
 **건당 평균: 400 tokens**
 

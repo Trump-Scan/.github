@@ -20,11 +20,11 @@
 
 **저장 데이터**:
 - `raw_data` - 원본 수집 데이터
-- `analysis_results` - 분석 결과 (요약, 산업 태그)
+- `analysis_results` - 분석 결과 (요약, 키워드)
 - `embedding_history` - 임베딩 벡터 이력
 - `similarity_history` - 중복 판정 이력
 - `feed_items` - 피드 아이템
-- `feed_industries` - 피드-산업 매핑
+- `feed_keywords` - 피드-키워드 매핑
 
 **특징**:
 - 영구 보존
@@ -109,7 +109,7 @@
 │ Oracle: embedding_history │
 │ Oracle: similarity_history│
 │ Oracle: feed_items        │
-│ Oracle: feed_tags         │
+│ Oracle: feed_keywords         │
 │ Redis: status             │
 └───────────────────────────┘
 ```
@@ -180,7 +180,7 @@ volumes:
 3. 중복 제거 + 피드 저장
    ↓ (Qdrant: 벡터 검색)
    ↓ (Oracle: embedding_history, similarity_history 저장)
-   ↓ (Oracle: feed_items, feed_industries 저장)
+   ↓ (Oracle: feed_items, feed_keywords 저장)
    ↓ (Redis Streams: queue:api)
 
 4. API 응답
