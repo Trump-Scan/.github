@@ -6,8 +6,7 @@
 |--------|------|------|
 | 데이터 수집 | Python | 웹 스크래핑, RSS 파싱 |
 | 분석 | Python | LLM API 호출, JSON 처리 |
-| 중복 제거 | Python | SentenceTransformers 임베딩 |
-| 피드 생성 | Node.js | 피드 항목 구성 및 저장 |
+| 중복 제거 | Python | SentenceTransformers 임베딩, 피드 저장 |
 | API | Node.js | Express 또는 Fastify |
 
 **총 언어 수**: 2개 (Python, Node.js)
@@ -22,10 +21,9 @@
 1. **언어 수 최소화**: 2개 언어로 관리 부담 감소
 2. **역할 분리 명확**: 데이터 처리(Python) vs 서빙(Node.js)
 3. **각 언어의 강점 활용**: Python의 ML/데이터 생태계, Node.js의 비동기 I/O
-4. **타입 공유**: 피드 생성과 API가 동일 언어로 타입 정의 공유 가능
 
 **장점**
-- 일관성 높음 (Python 3개, Node.js 2개)
+- 일관성 높음 (Python 3개, Node.js 1개)
 - 코드 재사용 가능 (같은 언어 레이어 간)
 - 빠른 개발 속도
 - 1인 개발 환경에 적합
@@ -76,12 +74,13 @@
 - 임베딩/ML 생태계 최강
 - Qdrant Python 클라이언트 공식 지원
 - 다른 언어 선택 시 별도 임베딩 서비스 필요 (복잡도 증가)
+- 피드 저장 기능 통합으로 레이어 단순화
 
 **주요 라이브러리**
 - `sentence-transformers` - 임베딩 생성
 - `qdrant-client` - 벡터 DB
 - `redis` - Redis Streams
-- `oracledb` - Oracle 연결
+- `oracledb` - Oracle 연결 (피드 저장 포함)
 
 **임베딩 모델**
 - all-MiniLM-L12-v2 또는 all-MiniLM-L6-v2
@@ -89,24 +88,7 @@
 
 ---
 
-### 4. 피드 생성 레이어 (Node.js)
-
-**선택 이유**
-- API 레이어와 동일 언어로 타입 정의 공유 가능
-- TypeScript 사용 시 피드 구조 타입 안전성 확보
-- 비동기 I/O에 최적화
-
-**주요 라이브러리**
-- `ioredis` - Redis Streams
-- `oracledb` - Oracle 연결
-
-**장점**
-- API와 피드 데이터 타입 공유
-- Node.js 생태계 일관성
-
----
-
-### 5. API 레이어 (Node.js)
+### 4. API 레이어 (Node.js)
 
 **선택 이유**
 - 비동기 I/O에 최적화
@@ -121,7 +103,7 @@
 
 ## 기술 스택 요약
 
-### Python 레이어 (수집, 분석, 중복 제거)
+### Python 레이어 (수집, 분석, 중복 제거, 피드 저장)
 
 | 용도 | 라이브러리 |
 |------|-----------|
@@ -131,7 +113,7 @@
 | JSON 검증 | pydantic |
 | 로깅 | structlog |
 
-### Node.js 레이어 (피드 생성, API)
+### Node.js 레이어 (API)
 
 | 용도 | 라이브러리 |
 |------|-----------|
@@ -149,11 +131,10 @@
 |----------|------|--------|
 | collector | Python | 데이터 수집 |
 | analyzer | Python | 분석 |
-| deduplicator | Python | 중복 제거 |
-| feed-generator | Node.js | 피드 생성 |
+| deduplicator | Python | 중복 제거 + 피드 저장 |
 | api-server | Node.js | API |
 
-**총 애플리케이션 컨테이너**: 5개
+**총 애플리케이션 컨테이너**: 4개
 
 ### 인프라 컨테이너
 
@@ -175,10 +156,8 @@
      ↓ Redis Streams (queue:collection)
 [분석 레이어 - Python]
      ↓ Redis Streams (queue:analysis)
-[중복 제거 레이어 - Python]
-     ↓ Redis Streams (queue:deduplication)
-[피드 생성 레이어 - Node.js]
-     ↓ Redis Streams (queue:feed)
+[중복 제거 + 피드 저장 레이어 - Python]
+     ↓ Redis Streams (queue:api)
 [API 레이어 - Node.js]
      ↓
 [클라이언트]

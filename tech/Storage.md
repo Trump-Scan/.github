@@ -108,17 +108,10 @@
 │ Qdrant: 벡터 검색         │
 │ Oracle: embedding_history │
 │ Oracle: similarity_history│
+│ Oracle: feed_items        │
+│ Oracle: feed_tags         │
 │ Redis: status             │
-└────────┬──────────────────┘
-         │ Redis Streams (queue:feed)
-         ↓
-┌─────────────────────┐
-│  피드 생성 레이어   │
-├─────────────────────┤
-│ Oracle: feed_items  │
-│ Oracle: feed_industries│
-│ Redis: status       │
-└─────────────────────┘
+└───────────────────────────┘
 ```
 
 ---
@@ -184,16 +177,13 @@ volumes:
    ↓ (Oracle: analysis_results 저장)
    ↓ (Redis Streams: queue:deduplication)
 
-3. 중복 제거
+3. 중복 제거 + 피드 저장
    ↓ (Qdrant: 벡터 검색)
    ↓ (Oracle: embedding_history, similarity_history 저장)
-   ↓ (Redis Streams: queue:feed)
-
-4. 피드 생성
    ↓ (Oracle: feed_items, feed_industries 저장)
-   ↓ (Redis: 캐시)
+   ↓ (Redis Streams: queue:api)
 
-5. API 응답
+4. API 응답
    ↓ (Redis: 캐시에서 조회)
    ↓ (Oracle: 데이터베이스 조회)
 ```

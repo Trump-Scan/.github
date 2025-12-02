@@ -46,7 +46,7 @@
 ```
 수집 레이어 → [MQ] → 분석 레이어
 분석 레이어 → [MQ] → 중복 제거 레이어
-중복 제거 레이어 → [MQ] → 피드 생성 레이어
+중복 제거 레이어 → [MQ] → API 레이어
 ```
 
 ---
@@ -133,10 +133,10 @@ Stream: queue:deduplication
   │   └─ Consumer: worker-1
   └─ DLQ: queue:deduplication:dlq
 
-Stream: queue:feed
-  ├─ Consumer Group: feed-workers
+Stream: queue:api
+  ├─ Consumer Group: api-workers
   │   └─ Consumer: worker-1
-  └─ DLQ: queue:feed:dlq
+  └─ DLQ: queue:api:dlq
 ```
 
 ### Python 클라이언트
@@ -355,7 +355,7 @@ for message_id, data in dlq_messages:
 |--------|-------------|----------------|------------|
 | 수집 → 분석 | `queue:analysis` | `analysis-workers` | `queue:analysis:dlq` |
 | 분석 → 중복제거 | `queue:deduplication` | `dedup-workers` | `queue:deduplication:dlq` |
-| 중복제거 → 피드 | `queue:feed` | `feed-workers` | `queue:feed:dlq` |
+| 중복제거 → API | `queue:api` | `api-workers` | `queue:api:dlq` |
 
 ---
 
